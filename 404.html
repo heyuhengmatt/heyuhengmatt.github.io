@@ -77,7 +77,7 @@ var saveToLocal = {
   isHome: false,
   isHighlightShrink: false,
   isSidebar: false,
-  postUpdate: '2020-10-11 16:32:55'
+  postUpdate: '2020-10-11 16:44:24'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -151,7 +151,7 @@ var saveToLocal = {
 
   }
 }
-window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script>window.addEventListener('load', () => {
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.17.0/js/md5.min.js"></script><script>window.addEventListener('load', () => {
   const changeContent = (content) => {
     if (content === '') return content
 
@@ -165,24 +165,11 @@ window.addEventListener('load',()=> {preloader.endLoading()})</script><div class
     return content
   }
 
-  const getGithubIssues = () => {
-    let githubArray = []
-    $.getJSON('https://api.github.com/repos/https://github.com/heyuhengmatt/comments_storage/issues/comments?sort=updated&direction=desc&per_page=6&page=1', (data) => { 
-      $.each(data, (index, item) => {
-        githubArray.push({
-          'avatar': item.user.avatar_url,
-          'content': changeContent(item.body),
-          'nick': item.user.login,
-          'url': item.html_url,
-          'date': item.updated_at
-        })
-      })
-      saveToLocal.set('github-newest-comments', JSON.stringify(githubArray), 10/(60*24))
-      generateHtml(githubArray)
-    }).fail(()=>{
-      const $dom = document.querySelector('#card-newest-comments .aside-list')
-      $dom.innerHTML= "无法获取资料，请确认相关配置是否正确"
-    })
+  const getIcon = (icon, mail) => {
+    if (icon) return icon 
+    let defaultIcon = ''
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
   }
 
   const generateHtml = array => {
@@ -192,7 +179,7 @@ window.addEventListener('load',()=> {preloader.endLoading()})</script><div class
       result += '<div class=\'aside-list-item\'>'
 
       if (true) {
-        result += `<a href='${array[i].url}' class="thumbnail"><img src='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        result += `<a href='${array[i].url}' class="thumbnail"><img src='${getIcon(array[i].avatar, array[i].mail)}' alt='${array[i].nick}'></a>`
       }
 
       result += `<div class='content'>
@@ -206,13 +193,54 @@ window.addEventListener('load',()=> {preloader.endLoading()})</script><div class
     window.pjax && window.pjax.refresh($dom)
   }
 
+  const getValineData = () => {
+      let serverURL = ''
+      if (false) {
+        serverURL = ''
+      } else {
+        serverURL = 'https://dfIqaR3d.api.lncldglobal.com'
+      }
+
+    var settings = {
+      "url": `${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "X-LC-Id": 'dfIqaR3dlG11rExjsg8QxPSq-gzGzoHsz',
+        "X-LC-Key": 'qnmn7PvGee645pdcmcucnyvJ',
+        "Content-Type": "application/json"
+      },
+    }
+
+    $.ajax(settings).done((response) => {
+      var valineArray = []
+      response.results.forEach((e)=>{
+        valineArray.push({
+          'avatar': e.QQAvatar,
+          'content': changeContent(e.comment),
+          'mail': e.mail,
+          'nick': e.nick,
+          'url': e.url,
+          'date': e.createdAt,
+        })
+      })
+      
+      saveToLocal.set('leancloud-newest-comments', JSON.stringify(valineArray), 10/(60*24))
+      generateHtml(valineArray)
+
+    }).fail(()=>{
+      const $dom = document.querySelector('#card-newest-comments .aside-list')
+      $dom.innerHTML= "无法获取资料，请确认相关配置是否正确"
+    })
+  }
+
   const newestCommentInit = () => {
     if (document.querySelector('#card-newest-comments .aside-list')) {
-      const data = saveToLocal.get('github-newest-comments')
+      const data = saveToLocal.get('leancloud-newest-comments')
       if (data) {
         generateHtml(JSON.parse(data))
       } else {
-        getGithubIssues()
+        getValineData()
       }
     }
   }
