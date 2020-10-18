@@ -1,0 +1,454 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>神经网络学习笔记 | Kevin's Space</title><meta name="keywords" content="python,神经网络学习,笔记"><meta name="author" content="Kevin Matt,he_yuheng@163.com"><meta name="copyright" content="Kevin Matt"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="神经网络学习笔记  1.什么是神经网络 首先构建一个两层神经网络，理论上两层神经网络已经可以拟合任意函数。这个神经网络的结构如下图：   1.简化神经网络分析 去掉图1中一些难懂的东西，如下图：   1.输入层 输入层是一个矩阵，可以是坐标或者数组，本例中输入的二维坐标(1,1)即一个1*2的矩阵，输入的维度即1 * 2  2.从输入层到隐藏层 如上图，连接输入层和隐藏层的是W1和b1。实质上是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络学习笔记">
+<meta property="og:url" content="https://heyuhengmatt.github.io/2020/10/18/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Kevin&#39;s Space">
+<meta property="og:description" content="神经网络学习笔记  1.什么是神经网络 首先构建一个两层神经网络，理论上两层神经网络已经可以拟合任意函数。这个神经网络的结构如下图：   1.简化神经网络分析 去掉图1中一些难懂的东西，如下图：   1.输入层 输入层是一个矩阵，可以是坐标或者数组，本例中输入的二维坐标(1,1)即一个1*2的矩阵，输入的维度即1 * 2  2.从输入层到隐藏层 如上图，连接输入层和隐藏层的是W1和b1。实质上是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201014140049.png">
+<meta property="article:published_time" content="2020-10-18T15:26:00.000Z">
+<meta property="article:modified_time" content="2020-10-18T15:26:00.000Z">
+<meta property="article:author" content="Kevin Matt">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="神经网络学习">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201014140049.png"><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://heyuhengmatt.github.io/2020/10/18/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":10,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Kevin Matt","link":"链接: ","source":"来源: Kevin's Space","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: true
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isSidebar: true,
+  postUpdate: '2020-10-18 23:26:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><link rel="stylesheet" href="/css/background.css"><link rel="stylesheet" href="/css/transp.css"><link rel="stylesheet" href="/css/roll.css"><style type="text/css">#toggle-sidebar {left:100px}</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/tags.css"><link href="https://fonts.font.im/css?family=Nunito:700" rel="stylesheet"><link href="https://fonts.lug.ustc.edu.cn/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/css/hideCategory.min.css" rel="stylesheet"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://s1.ax1x.com/2020/10/11/067U1A.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">7</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">13</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文档</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> 神经网络学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E4%BB%80%E4%B9%88%E6%98%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.什么是神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%AE%80%E5%8C%96%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.简化神经网络分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E8%BE%93%E5%85%A5%E5%B1%82"><span class="toc-number">1.1.1.1.</span> <span class="toc-text"> 1.输入层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E4%BB%8E%E8%BE%93%E5%85%A5%E5%B1%82%E5%88%B0%E9%9A%90%E8%97%8F%E5%B1%82"><span class="toc-number">1.1.1.2.</span> <span class="toc-text"> 2.从输入层到隐藏层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E4%BB%8E%E9%9A%90%E8%97%8F%E5%B1%82%E5%88%B0%E8%BE%93%E5%87%BA%E5%B1%82"><span class="toc-number">1.1.1.3.</span> <span class="toc-text"> 3.从隐藏层到输出层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.1.4.</span> <span class="toc-text"> 4.分析过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%BF%80%E6%B4%BB%E5%B1%82"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2.激活层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E8%BE%93%E5%87%BA%E7%9A%84%E8%A7%84%E8%8C%83%E5%8C%96"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 3.输出的规范化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E5%A6%82%E4%BD%95%E8%A1%A1%E9%87%8F%E8%BE%93%E5%87%BA%E7%9A%84%E5%A5%BD%E5%9D%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 4.如何衡量输出的好坏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%92%8C%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96"><span class="toc-number">1.1.5.</span> <span class="toc-text"> 5.反向传播和参数优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E8%BF%AD%E4%BB%A3%E8%BF%90%E7%AE%97"><span class="toc-number">1.1.6.</span> <span class="toc-text"> 6.迭代运算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%BB%86%E8%AE%B2"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.反向传播细讲</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E9%93%BE%E5%BC%8F%E6%B3%95%E5%88%99"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1.链式法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.反向传播过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E5%8A%A0%E6%B3%95%E8%8A%82%E7%82%B9"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 1.加法节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E4%B9%98%E6%B3%95%E8%8A%82%E7%82%B9"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 2.乘法节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2"><span class="toc-number">1.2.2.3.</span> <span class="toc-text"> 3.仿射变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E6%BF%80%E6%B4%BB%E5%B1%82"><span class="toc-number">1.2.2.4.</span> <span class="toc-text"> 4.激活层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5softmax-with-loss"><span class="toc-number">1.2.2.5.</span> <span class="toc-text"> 5.Softmax-with-loss</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%9B%B4%E6%96%B0%E5%8F%82%E6%95%B0"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 3.更新参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E5%86%99%E4%B8%80%E4%B8%AA%E4%B8%A4%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.写一个两层神经网络</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201014140049.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kevin's Space</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文档</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">神经网络学习笔记</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-10-18T15:26:00.000Z" title="发表于 2020-10-18 23:26:00">2020-10-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-18T15:26:00.000Z" title="更新于 2020-10-18 23:26:00">2020-10-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Note/">Note</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="神经网络学习笔记"><a class="markdownIt-Anchor" href="#神经网络学习笔记"></a> 神经网络学习笔记</h1>
+<h2 id="1什么是神经网络"><a class="markdownIt-Anchor" href="#1什么是神经网络"></a> 1.什么是神经网络</h2>
+<p>首先构建一个两层神经网络，理论上两层神经网络已经可以拟合任意函数。这个神经网络的结构如下图：</p>
+<img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018232804.jpeg" alt="图1" style="zoom:50%;" />
+<h3 id="1简化神经网络分析"><a class="markdownIt-Anchor" href="#1简化神经网络分析"></a> 1.简化神经网络分析</h3>
+<p>去掉图1中一些难懂的东西，如下图：</p>
+<img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018232906.jpeg" alt="图2" style="zoom:50%;" />
+<h4 id="1输入层"><a class="markdownIt-Anchor" href="#1输入层"></a> 1.输入层</h4>
+<p>输入层是一个矩阵，可以是坐标或者数组，本例中输入的二维坐标(1,1)即一个1*2的矩阵，输入的维度即1 * 2</p>
+<h4 id="2从输入层到隐藏层"><a class="markdownIt-Anchor" href="#2从输入层到隐藏层"></a> 2.从输入层到隐藏层</h4>
+<p>如上图，连接输入层和隐藏层的是W1和b1。实质上是矩阵运算，公式如下：</p>
+<img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018233214.png" alt="img"  />
+<p>W1和b1的参数可通过X和H的结果来确定。如本例中W1就为2x50的矩阵。</p>
+<h4 id="3从隐藏层到输出层"><a class="markdownIt-Anchor" href="#3从隐藏层到输出层"></a> 3.从隐藏层到输出层</h4>
+<p>同样是一个矩阵运算：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018233335.png" alt="img" /></p>
+<h4 id="4分析过程"><a class="markdownIt-Anchor" href="#4分析过程"></a> 4.分析过程</h4>
+<p>线性代数的线性矩阵运算是可以表示为一个线性方程的，所以哪怕有100层这样的神经网络也可以用一个线性方程表示，如此神经网络的深度就失去了意义，所以要对每一层进行一个处理来让深度变得有意义。这个过程就是引入<strong>激活层</strong></p>
+<h3 id="2激活层"><a class="markdownIt-Anchor" href="#2激活层"></a> 2.激活层</h3>
+<p><em>激活层</em>简单来讲就是为矩阵运算添加一个非线性的运算过程。常用的激活函数有三种，分别是阶跃函数、Sigmoid和ReLU。它们的形式并不复杂，如图：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018233814.png" alt="阶跃函数" style="zoom:80%;" /><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018233906.png" alt="Sigmoid函数" style="zoom:80%;" /><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018233906.png" alt="ReLUjams函数" style="zoom:80%;" /></p>
+<p>激活层的位置位于隐藏层之后，对隐藏层的数据进行处理，使得这一层的线性计算有意义。</p>
+<p>此时的神经网络已经变成下图：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018234038.jpeg" alt="" /></p>
+<p>通过前面的计算，转换回输出层之后我们已经可以依据数值大小得到分类情况，但是对于“训练”的网络此时还不够，并不适合直接表示概率。</p>
+<h3 id="3输出的规范化"><a class="markdownIt-Anchor" href="#3输出的规范化"></a> 3.输出的规范化</h3>
+<p>我们希望让最终的输出为<strong>概率</strong>，也就是说可以生成像(90%,5%,2%,3%)这样的结果，这样做不仅可以找到最大概率的分类，而且可以知道各个分类计算的概率值。</p>
+<p>这个过程可以用一个公式来实现转换：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018234259.png" alt="规范化公式" /></p>
+<p>简单来说分三步进行：（1）以e为底对所有元素求指数幂；（2）将所有指数幂求和；（3）分别将这些指数幂与该和做商。</p>
+<p>这样求出的结果里元素和必为1，每个元素可以直接表示概率值。</p>
+<p>我们将使用这个计算公式做输出结果正规化处理的层叫做“Softmax”层。此时的神经网络将变成如下图所示：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018234358.jpeg" alt="img" /></p>
+<h3 id="4如何衡量输出的好坏"><a class="markdownIt-Anchor" href="#4如何衡量输出的好坏"></a> 4.如何衡量输出的好坏</h3>
+<p>通过Softmax层之后，我们得到了I，II，III和IV这四个类别分别对应的概率，但是这是神经网络计算得到的概率值结果，而非真实的情况，于是我们需要将Softmax输出结果的好坏程度做一个“量化”。</p>
+<p>常用的方法是，求<strong>对数的负数</strong>。</p>
+<p>用90%举例，对数的负数就是：-log0.9=0.046</p>
+<p>概率越接近100%，该计算结果值越接近于0，说明结果越准确，该输出叫做“<strong>交叉熵损失</strong>（Cross Entropy Error）”。</p>
+<p>我们训练神经网络的目的正是尽可能减小这个“交叉熵损失”</p>
+<p>此时的网络如下图：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018234544.jpeg" alt="img" /></p>
+<p>总结上面四点：<strong>神经网络的传播都是形如Y=WX+b的矩阵运算；为了给矩阵运算加入非线性，需要在隐藏层中加入激活层；输出层结果需要经过Softmax层处理为概率值，并通过交叉熵损失来量化当前网络的优劣。</strong></p>
+<h3 id="5反向传播和参数优化"><a class="markdownIt-Anchor" href="#5反向传播和参数优化"></a> 5.反向传播和参数优化</h3>
+<p>反向传播就是一个<strong>参数优化</strong>的过程，优化对象就是网络中的所有W和b（因为其他所有参数都是确定的）。</p>
+<blockquote>
+<p>这里举一个形象的例子描述一下这个参数优化的原理和过程：</p>
+<p>假设我们操纵着一个球型机器行走在沙漠中</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018235719.jpeg" alt="img" /></p>
+<p>我们在机器中操纵着四个旋钮，分别叫做W1，b1，W2，b2。当我们旋转其中的某个旋钮时，球形机器会发生移动，但是旋转旋钮大小和机器运动方向之间的对应关系是不知道的。而我们的目的就是<strong>走到沙漠的最低点</strong>。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018235727.jpeg" alt="img" /></p>
+<p>此时我们该怎么办？只能挨个试喽。</p>
+<p>如果增大W1后，球向上走了，那就减小W1。</p>
+<p>如果增大b1后，球向下走了，那就继续增大b1。</p>
+<p>如果增大W2后，球向下走了一大截，那就多增大些W2。</p>
+<p>。。。</p>
+<p>这就是进行参数优化的形象解释（有没有想到求导？），这个方法叫做<strong>梯度下降法</strong>。</p>
+<p>当我们的球形机器走到最低点时，也就代表着我们的交叉熵损失达到最小（接近于0）。</p>
+</blockquote>
+<h3 id="6迭代运算"><a class="markdownIt-Anchor" href="#6迭代运算"></a> 6.迭代运算</h3>
+<p>神经网络需要反复迭代。</p>
+<p>如上述例子中，第一次计算得到的概率是90%，交叉熵损失值是0.046；将该损失值反向传播，使W1,b1,W2,b2做相应微调；再做第二次运算，此时的概率可能就会提高到92%，相应地，损失值也会下降，然后再反向传播损失值，微调参数W1,b1,W2,b2。依次类推，损失值越来越小，直到我们满意为止。</p>
+<h2 id="2反向传播细讲"><a class="markdownIt-Anchor" href="#2反向传播细讲"></a> 2.反向传播细讲</h2>
+<h3 id="1链式法则"><a class="markdownIt-Anchor" href="#1链式法则"></a> 1.链式法则</h3>
+<p>在讲反向传播之前先讲一下链式法则。</p>
+<p>假设一个场景，一辆汽车20万元，要收10%的购置税，如果要买2辆，则正向传播的过程可以画成：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-4ba4a655a2587cb80255301f021fd094_r.jpg" alt="img" /></p>
+<p>汽车单价20万，最终需要支付44万，我现在想知道汽车单价每波动1万，对最终支付价格的影响是多少。参看下图：我们从右向左依次求导，得到的值分别为：</p>
+<p>①44/44=1</p>
+<p>②44/40=1.1</p>
+<p>③40/20=2</p>
+<p>那么最终价格相对于汽车单价的导数就是①×②×③=2.2</p>
+<p>这就是链式法则。我们只需要知道每个节点导数值，然后求乘积就可以了。</p>
+<p>链式法则的一种定义*是：</p>
+<blockquote>
+<p>如果某个函数由复合函数表示，则该复合函数的导数可以用构成复合函数的各个函数的导数的乘积表示。</p>
+</blockquote>
+<p>所以我们只需要关注每个节点的<strong>导数值</strong>即可。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019000318.png" alt="" /></p>
+<h3 id="2反向传播过程"><a class="markdownIt-Anchor" href="#2反向传播过程"></a> 2.反向传播过程</h3>
+<h4 id="1加法节点"><a class="markdownIt-Anchor" href="#1加法节点"></a> 1.加法节点</h4>
+<p>如图，该节点可写作z=x+y:</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019000617.jpg" alt="" /></p>
+<p>很容易知道，z对x求导等于1，对y求导也等于1，所以在加法节点反向传递时，输入的值会<strong>原封不动</strong>地流入下一个节点。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019000801.jpg" alt="v2-af7e1730bdbec086cc35c4e5aaddafb8_r" /></p>
+<h4 id="2乘法节点"><a class="markdownIt-Anchor" href="#2乘法节点"></a> 2.乘法节点</h4>
+<p>如下图，该节点可以写作z=x*y：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019001025.jpg" alt="v2-4e469fa4277fa7d805bf3401eeb039f1_720w" /></p>
+<p>同样很容易知道，z对x求导等于y，对y求导等于x，所以在加法节点反向传递时，输入的值<strong>交叉相乘</strong>然后流入下一个节点。</p>
+<img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019001055.jpg" alt="v2-d1c9b86f515225adb531d6abc72ec7b9_r" style="zoom:80%;" />
+<h4 id="3仿射变换"><a class="markdownIt-Anchor" href="#3仿射变换"></a> 3.仿射变换</h4>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019001123.png" alt="img" /></p>
+<p>转化成图：</p>
+<img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019001143.jpg" alt="仿射变换" style="zoom:80%;" />
+<p>这是神经网络里的一个重要形式单元。这个图片看起来虽然复杂，但其实和乘法节点是类似的，我们对X求导，结果就是W1；对W1求导，结果就是X，到这里和乘法节点是一样的；对b1求导，结果为1，<strong>原封不动</strong>地流入即可。不过需要注意的一点是，这里的相乘是向量之间的乘法。</p>
+<h4 id="4激活层"><a class="markdownIt-Anchor" href="#4激活层"></a> 4.激活层</h4>
+<p>激活层以ReLU为例。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019001430.jpg" alt="ReLU" /></p>
+<p>因为当x&gt;0时，y=x，求导为1，也就是原封不动传递。</p>
+<p>当x&lt;=0时，y=0，求导为0，也就是传递值为0。</p>
+<h4 id="5softmax-with-loss"><a class="markdownIt-Anchor" href="#5softmax-with-loss"></a> 5.Softmax-with-loss</h4>
+<p>Softmax-with-Loss指的就是Softmax和交叉熵损失。</p>
+<img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019001606.jpg" alt="参考" style="zoom:67%;" />
+<p>其中</p>
+<blockquote>
+<p>从前面的层输入的是(a1, a2, a3)，softmax层输出(y1, y2, y3)。此外，教师标签是(t1, t2, t3)，Cross Entropy Error层输出损失L。</p>
+</blockquote>
+<p>所谓教师标签，就是表示是否分类正确的标签，比如正确分类应该是第一行的结果时，(t1, t2, t3)就是(1,0,0)。</p>
+<p>从上图可以看出，Softmax-with-Loss的反向传播的结果为(y1 − t1, y2 − t2, y3 − t3)。</p>
+<h3 id="3更新参数"><a class="markdownIt-Anchor" href="#3更新参数"></a> 3.更新参数</h3>
+<blockquote>
+<p>参数的更新对象其实就是W和b，具体的在2.3中对其更新方法进行了描述，简单来说，dW就是输入值乘以X，db就等于输入值。这里用dW和db表示反向传播到W和b节点时的计算结果。</p>
+<p>那现在该怎样更新W和b呢？</p>
+<p>直接用W=W-dW；b=b-db么？</p>
+<p>可以，但不太好。</p>
+</blockquote>
+<p><strong>其一</strong>，需要引入<strong>正则化惩罚项</strong>。这是为了避免最后求出的W过于集中所设置的项，比如[1/3,1/3,1/3]和[1,0,0]，这两个结果明显前一个结果更为分散，也是我们更想要的。为了衡量分散度，我们用<img src= "/img/loading.gif" data-lazy-src="https://www.zhihu.com/equation?tex=1%2F2W%5E2" alt="[公式]" /> 来表示。对该式求导，结果就是W。设正则化惩罚项的系数值为reg，那么修正后的dW可以写为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019002329.png" alt="image-20201019002329778" /></p>
+<p><strong>其二</strong>，是步子迈的有点大。直接反向传播回来的量值可能会比较大，在寻找最优解的过程中可能会直接将最优解越过去，所以在这里设置一个参数：<strong>学习率</strong>。这个数通常很小，比如设学习率为0.0001这样。我们将学习率用epsilon表示，那么最终更新后的W和b写为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201019002347.png" alt="image-20201019002347133" /></p>
+<p>至此，一次反向传播的流程就走完了。</p>
+<h2 id="3写一个两层神经网络"><a class="markdownIt-Anchor" href="#3写一个两层神经网络"></a> 3.写一个两层神经网络</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># *前向传播函数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">affine_forward</span>(<span class="params">x, w, b</span>):</span></span><br><span class="line">    out = <span class="literal">None</span>  <span class="comment"># *初始化返回值为None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># *将输入参数转换为一维向量</span></span><br><span class="line">    N = x.shape[<span class="number">0</span>]  <span class="comment"># *重置参数X的形状</span></span><br><span class="line">    x_row = x.reshape(N, <span class="number">-1</span>)  <span class="comment"># *(N,D)</span></span><br><span class="line"></span><br><span class="line">    out = np.dot(x_row, w) + b  <span class="comment"># *(N,M)，矩阵线性运算</span></span><br><span class="line">    cache = (x, w, b)  <span class="comment"># *缓存值，用于反向传播</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> out, cache</span><br><span class="line"></span><br><span class="line"><span class="comment"># *反向传播函数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">affine_backward</span>(<span class="params">dout, cache</span>):</span></span><br><span class="line">    x, w, b = cache  <span class="comment"># *读取缓存</span></span><br><span class="line">    dx, dw, db = <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>  <span class="comment"># *初始化返回值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># *为了得到流入下一个节点的值（x），要将上一节点的输入值（dout）乘以w。</span></span><br><span class="line">    dx = np.dot(dout, w.T)  <span class="comment"># *(N,D)</span></span><br><span class="line"></span><br><span class="line">    dx = np.reshape(dx, x.shape)  <span class="comment"># *(N,d1,...,d_k)</span></span><br><span class="line">    x_row = x.reshape(x.shape[<span class="number">0</span>],<span class="number">-1</span>)  <span class="comment"># *(N,D)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># *为了得到w的值，要将上一节点输入的值（dout）乘以x。</span></span><br><span class="line">    dw = np.dot(x_row.T, dout)  <span class="comment"># *(D,M)</span></span><br><span class="line">    <span class="comment"># *为了得到b，只需要将dout直接传过来就可以，为了保持维度一致，这里将dout求和。</span></span><br><span class="line">    db = np.sum(dout, axis=<span class="number">0</span>, keepdims=<span class="literal">True</span>)  <span class="comment"># *(1,M)</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dx, dw, db</span><br><span class="line"></span><br><span class="line"><span class="comment"># *初始化参数</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">X = np.array([[<span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">              [<span class="number">-1</span>, <span class="number">1</span>],</span><br><span class="line">              [<span class="number">-1</span>, <span class="number">-1</span>],</span><br><span class="line">              [<span class="number">1</span>, <span class="number">-1</span>]])      <span class="comment"># *用于训练的坐标，对应的是I、II、III、IV象限</span></span><br><span class="line">t = np.array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])   <span class="comment"># *标签，对应的是I、II、III、IV象限</span></span><br><span class="line">np.random.seed(<span class="number">1</span>)         <span class="comment"># *有这行语句，你们生成的随机数就和我一样了</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># *一些初始化参数</span></span><br><span class="line">input_dim = X.shape[<span class="number">1</span>]     <span class="comment"># *输入参数的维度，此处为2，即每个坐标用两个数表示</span></span><br><span class="line">num_classes = t.shape[<span class="number">0</span>]   <span class="comment"># *输出参数的维度，此处为4，即最终分为四个象限</span></span><br><span class="line">hidden_dim = <span class="number">50</span>            <span class="comment"># *隐藏层维度，为可调参数</span></span><br><span class="line">reg = <span class="number">0.001</span>                <span class="comment"># *正则化强度，为可调参数</span></span><br><span class="line">epsilon = <span class="number">0.001</span>            <span class="comment"># *梯度下降的学习率，为可调参数</span></span><br><span class="line"><span class="comment"># *初始化W1，W2，b1，b2</span></span><br><span class="line">W1 = np.random.randn(input_dim, hidden_dim)     <span class="comment"># *(2,50)</span></span><br><span class="line">W2 = np.random.randn(hidden_dim, num_classes)   <span class="comment"># *(50,4)</span></span><br><span class="line">b1 = np.zeros((<span class="number">1</span>, hidden_dim))                  <span class="comment"># *(1,50)</span></span><br><span class="line">b2 = np.zeros((<span class="number">1</span>, num_classes))                 <span class="comment"># *(1,4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># *训练与迭代</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">10000</span>):  <span class="comment"># *这里设置了训练的循环次数为10000</span></span><br><span class="line"> <span class="comment"># *前向传播</span></span><br><span class="line">    H, fc_cache = affine_forward(X, W1, b1)                 <span class="comment"># *第一层前向传播</span></span><br><span class="line">    H = np.maximum(<span class="number">0</span>, H)                                 <span class="comment"># *激活</span></span><br><span class="line">    relu_cache = H                                       <span class="comment"># *缓存第一层激活后的结果</span></span><br><span class="line">    Y, cachey = affine_forward(H, W2, b2)                   <span class="comment"># *第二层前向传播</span></span><br><span class="line"> <span class="comment"># *Softmax层计算</span></span><br><span class="line">    probs = np.exp(Y - np.max(Y, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br><span class="line">    probs /= np.sum(probs, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)        <span class="comment"># *Softmax算法实现</span></span><br><span class="line"> <span class="comment"># * 计算loss值</span></span><br><span class="line">    N = Y.shape[<span class="number">0</span>]                                       <span class="comment"># *值为4</span></span><br><span class="line">    <span class="comment"># *打印各个数据的正确解标签对应的神经网络的输出</span></span><br><span class="line">    print(probs[np.arange(N), t])</span><br><span class="line">    loss = -np.sum(np.log(probs[np.arange(N), t])) / N   <span class="comment"># *计算loss</span></span><br><span class="line">    print(loss)                                          <span class="comment"># *打印loss</span></span><br><span class="line"> <span class="comment"># * 反向传播</span></span><br><span class="line">    dx = probs.copy()                                    <span class="comment"># *以Softmax输出结果作为反向输出的起点</span></span><br><span class="line">    dx[np.arange(N), t] -= <span class="number">1</span>                             <span class="comment">#</span></span><br><span class="line">    dx /= N                                              <span class="comment"># *到这里是反向传播到softmax前</span></span><br><span class="line">    dh1, dW2, db2 = affine_backward(dx, cachey)          <span class="comment"># *反向传播至第二层前</span></span><br><span class="line">    dh1[relu_cache &lt;= <span class="number">0</span>] = <span class="number">0</span>                             <span class="comment"># *反向传播至激活层前</span></span><br><span class="line">    dX, dW1, db1 = affine_backward(dh1, fc_cache)        <span class="comment"># *反向传播至第一层前</span></span><br><span class="line"><span class="comment"># *参数更新</span></span><br><span class="line">    dW2 += reg * W2</span><br><span class="line">    dW1 += reg * W1</span><br><span class="line">    W2 += -epsilon * dW2</span><br><span class="line">    b2 += -epsilon * db2</span><br><span class="line">    W1 += -epsilon * dW1</span><br><span class="line">    b1 += -epsilon * db1</span><br><span class="line"></span><br><span class="line">test = np.array([[<span class="number">2</span>, <span class="number">2</span>], [<span class="number">-2</span>, <span class="number">2</span>], [<span class="number">-2</span>, <span class="number">-2</span>], [<span class="number">2</span>, <span class="number">-2</span>]])</span><br><span class="line">H, fc_cache = affine_forward(test, W1, b1)  <span class="comment"># *仿射</span></span><br><span class="line">H = np.maximum(<span class="number">0</span>, H)  <span class="comment"># *激活</span></span><br><span class="line">relu_cache = H</span><br><span class="line">Y, cachey = affine_forward(H, W2, b2)  <span class="comment"># *仿射</span></span><br><span class="line"><span class="comment"># *Softmax</span></span><br><span class="line">probs = np.exp(Y - np.max(Y, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br><span class="line">probs /= np.sum(probs, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)  <span class="comment"># *Softmax</span></span><br><span class="line">print(probs)</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">    print(test[k, :], <span class="string">&quot;所在的象限为&quot;</span>, np.argmax(probs[k, :])+<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:he_yuheng@163.com">Kevin Matt</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://heyuhengmatt.github.io/2020/10/18/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0/">https://heyuhengmatt.github.io/2020/10/18/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://heyuhengmatt.github.io" target="_blank">Kevin's Space</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/python/">python</a><a class="post-meta__tags" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0/">神经网络学习</a><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div><div class="post_share"><div class="social-share" data-image="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201014140049.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://kevinmatt-1303917904.file.myqcloud.com/wechat_pay.png" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/wechat_pay.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://kevinmatt-1303917904.file.myqcloud.com/ali_pay.png" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/ali_pay.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/10/17/%E6%B5%81%E9%87%8F%E6%98%8E%E6%98%9F%E5%B0%8F%E4%BD%9C%E6%96%87/"><img class="next-cover" data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/20201018022159.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">对流量明星的一通胡乱点评</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/10/13/使用python绘制球场/" title="使用python绘制传球事件和统计图像"><img class="cover" data-lazy-src="https://www.z4a.net/images/2020/10/08/plswork-2.gif"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-13</div><div class="title">使用python绘制传球事件和统计图像</div></div></a></div><div><a href="/2020/10/11/自动通过滑动验证码/" title="利用python实现自动通过滑动验证码"><img class="cover" data-lazy-src="https://www.z4a.net/images/2020/10/08/slide_bkg.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-11</div><div class="title">利用python实现自动通过滑动验证码</div></div></a></div><div><a href="/2020/10/14/python-filter/" title="Python滤镜和图像风格迁移"><img class="cover" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201018143620.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-14</div><div class="title">Python滤镜和图像风格迁移</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><label><input id="switch-comments-btn" type="checkbox"/><span class="slider"></span></label><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="gitalk-container"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Kevin Matt</div><div class="footer_custom_text">Hello, welcome to Kevin's space!</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js', function () {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'dfIqaR3dlG11rExjsg8QxPSq-gzGzoHsz',
+      appKey: 'qnmn7PvGee645pdcmcucnyvJ',
+      placeholder: '请留下你的足迹,昵称可以使用QQ~',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: true,
+      serverURLs: 'https://dfiqar3d.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: '1273d62f90e8f8d64e00',
+      clientSecret: 'e76e12b79ad79ddcdb0974c0c223231f94e45cd5',
+      repo: 'comments_storage',
+      owner: 'heyuhengmatt',
+      admin: ['heyuhengmatt'],
+      id: 'b759f7bfbc6ebb4127a986d7a9ad9503',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    $.getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js', initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Valine' === 'Gitalk' || !true) {
+  if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div class="aplayer no-destroy" data-id="5294500260" data-volume="0.3" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/hideCategory.min.js"><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>
