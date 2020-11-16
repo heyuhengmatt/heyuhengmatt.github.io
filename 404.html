@@ -10,7 +10,6 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/10/11/067U1A.jpg"><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://heyuhengmatt.github.io/404"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
   root: '/',
-  hexoversion: '5.2.0',
   algolia: undefined,
   localSearch: undefined,
   translate: undefined,
@@ -76,8 +75,8 @@ var saveToLocal = {
   isPost: false,
   isHome: false,
   isHighlightShrink: true,
-  isSidebar: false,
-  postUpdate: '2020-11-10 22:59:05'
+  isToc: false,
+  postUpdate: '2020-11-16 14:45:48'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -90,8 +89,7 @@ var saveToLocal = {
   #post-meta time {
     display: inline !important
   }
-</style></noscript><script>(function () {
-  window.activateDarkMode = function () {
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
     document.documentElement.setAttribute('data-theme', 'dark')
     if (document.querySelector('meta[name="theme-color"]') !== null) {
       document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
@@ -99,11 +97,10 @@ var saveToLocal = {
   }
   window.activateLightMode = function () {
     document.documentElement.setAttribute('data-theme', 'light')
-    if (document.querySelector('meta[name="theme-color"]') !== null) {
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
       document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
     }
   }
-
   const autoChangeMode = 'false'
   const t = saveToLocal.get('theme')
   if (autoChangeMode === '1') {
@@ -111,7 +108,6 @@ var saveToLocal = {
     const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
     const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
     const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
-
     if (t === undefined) {
       if (isLightMode) activateLightMode()
       else if (isDarkMode) activateDarkMode()
@@ -138,8 +134,7 @@ var saveToLocal = {
   } else {
     if (t === 'dark') activateDarkMode()
     else if (t === 'light') activateLightMode()
-  }
-})()</script><link rel="stylesheet" href="/css/background.css"><link rel="stylesheet" href="/css/transp.css"><link rel="stylesheet" href="/css/roll.css"><style type="text/css">#toggle-sidebar {left:100px}</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/tags.css"><link href="https://fonts.font.im/css?family=Nunito:700" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/css/hideCategory.min.css" rel="stylesheet"><!-- hexo injector head_end start -->
+  }})()</script><link rel="stylesheet" href="/css/background.css"><link rel="stylesheet" href="/css/transp.css"><link rel="stylesheet" href="/css/roll.css"><style type="text/css">#toggle-sidebar {left:100px}</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/tags.css"><link href="https://fonts.font.im/css?family=Nunito:700" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/css/hideCategory.min.css" rel="stylesheet"><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
