@@ -1,6 +1,9 @@
 .vsys {
   display: none !important;
 }
+.vpower.txt-right {
+  display: none !important;
+}
 .v .vwrap {
   padding: 0 0 44px;
 }
