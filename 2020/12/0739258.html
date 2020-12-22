@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C语言期末复习指南 | Kevin's Space</title><meta name="keywords" content="top,daily_update"><meta name="author" content="Kevin Matt,he_yuheng@163.com"><meta name="copyright" content="Kevin Matt"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="C语言期末复习指南 按照软件学院的惯例，C语言期末考试是不直接考概念填空题和选择题的。 所以我们今天要讲的基本是贴近实际题目的情况：  基础篇  1.C的输入输出 程序从main函数开始执行之类的概念相信我已经不必多说了，所以我们先看到输入输出的一些考察点： 举例，通常情况下最多用到的输入函数是scanf: #include &lt;stdio.h&gt;int main()&amp;#123;">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C语言期末复习指南 | Kevin's Space</title><meta name="keywords" content="top,daily_update"><meta name="author" content="Kevin Matt,he_yuheng@163.com"><meta name="copyright" content="Kevin Matt"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="C语言期末复习指南 按照软件学院的惯例，C语言期末考试是不直接考概念填空题和选择题的。 所以我们今天要讲的基本是贴近实际题目的情况：  基础篇  1.C的输入输出 程序从main函数开始执行之类的概念相信已经不必多说了，所以我们先看到输入输出的一些考察点： 举例，通常情况下最多用到的输入函数是scanf: #include &lt;stdio.h&gt;int main()&amp;#123;    i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C语言期末复习指南">
 <meta property="og:url" content="https://heyuhengmatt.github.io/2020/12/0739258.html">
 <meta property="og:site_name" content="Kevin&#39;s Space">
-<meta property="og:description" content="C语言期末复习指南 按照软件学院的惯例，C语言期末考试是不直接考概念填空题和选择题的。 所以我们今天要讲的基本是贴近实际题目的情况：  基础篇  1.C的输入输出 程序从main函数开始执行之类的概念相信我已经不必多说了，所以我们先看到输入输出的一些考察点： 举例，通常情况下最多用到的输入函数是scanf: #include &lt;stdio.h&gt;int main()&amp;#123;">
+<meta property="og:description" content="C语言期末复习指南 按照软件学院的惯例，C语言期末考试是不直接考概念填空题和选择题的。 所以我们今天要讲的基本是贴近实际题目的情况：  基础篇  1.C的输入输出 程序从main函数开始执行之类的概念相信已经不必多说了，所以我们先看到输入输出的一些考察点： 举例，通常情况下最多用到的输入函数是scanf: #include &lt;stdio.h&gt;int main()&amp;#123;    i">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://kevinmatt-1303917904.file.myqcloud.com/20201221195953.png">
 <meta property="article:published_time" content="2020-12-07T08:18:35.000Z">
@@ -147,7 +147,7 @@ var saveToLocal = {
 <p>所以我们今天要讲的基本是贴近实际题目的情况：</p>
 <h2 id="基础篇"><a class="markdownIt-Anchor" href="#基础篇"></a> 基础篇</h2>
 <h4 id="1c的输入输出"><a class="markdownIt-Anchor" href="#1c的输入输出"></a> 1.C的输入输出</h4>
-<p>程序从<code>main</code>函数开始执行之类的概念相信我已经不必多说了，所以我们先看到输入输出的一些考察点：</p>
+<p>程序从<code>main</code>函数开始执行之类的概念相信已经不必多说了，所以我们先看到输入输出的一些考察点：</p>
 <p>举例，通常情况下最多用到的输入函数是<code>scanf</code>:</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通常考察的也就是<strong>格式控制</strong>和<strong>地址符<code>&amp;</code></strong>，保持前面的格式控制和要存储的变量类型一致就OK了，另外，除了指针以外，变量前都是要加地址符<code>&amp;</code>的。这种情况在改错题可能会遇到，还有自己写代码的时候也不能犯错。</p>
@@ -163,7 +163,7 @@ var saveToLocal = {
 <h5 id="if语句"><a class="markdownIt-Anchor" href="#if语句"></a> <code>if</code>语句：</h5>
 <p>一般在读程序题里考察：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>, y = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">for</span> (; x &lt; <span class="number">10</span>; x++)</span><br><span class="line">    &#123;</span><br><span class="line">        x += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (x &gt; <span class="number">7</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span> (x == <span class="number">6</span>)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        y *= x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d  %d\n&quot;</span>, x, y);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的输出是9  6；</p>
+<p>这里的输出是9   6；</p>
 <p>首先要明确<code>if</code>的工作方式：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(A)</span><br><span class="line">&#123;</span><br><span class="line">	B;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (C)</span><br><span class="line">&#123;</span><br><span class="line">	D;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	E;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>程序执行到<code>if</code>的位置之后，</p>
@@ -245,7 +245,7 @@ var saveToLocal = {
 <li><code>(int param[10])</code>  数组</li>
 <li><code>(int param[])</code>  首地址</li>
 </ul>
-<p>二维数组的传入则相对复杂一点，这里不再讲解。</p>
+<p>二维数组的传入则相对复杂一点，这里不多讲解。</p>
 <h2 id="进阶篇"><a class="markdownIt-Anchor" href="#进阶篇"></a> 进阶篇</h2>
 <h4 id="1指针"><a class="markdownIt-Anchor" href="#1指针"></a> 1.指针</h4>
 <h5 id="什么是指针"><a class="markdownIt-Anchor" href="#什么是指针"></a> 什么是指针：</h5>
@@ -268,14 +268,14 @@ var saveToLocal = {
 <p>我们直接定义整型变量<code>a=10</code>，然后调用<code>changevalue</code>函数修改<code>a</code>的值，再在<code>main</code>中打印出<code>a</code>的值。</p>
 <p>打印的结果为：</p>
 <blockquote>
-<p>10</p>
+<p><code>10</code></p>
 </blockquote>
 <p><code>a</code>的值并没有发生改变。</p>
 <p>再看看这一段代码：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">changevalue</span><span class="params">(<span class="keyword">int</span> *a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *a = <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> *a;</span><br><span class="line">    a = &amp;b;</span><br><span class="line">    changevalue(a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, *a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们选用指针来操作，输出的结果：</p>
 <blockquote>
-<p>100</p>
+<p><code>100</code></p>
 </blockquote>
 <p>为什么会有这样的差别呢？</p>
 <p>因为当<code>changevalue</code>函数被调用时，修改的变量是<code>a</code>这个指针变量，也就是对指定的内存空间进行了修改，这样<code>a</code>指向的值就发生了改变，这个函数不用再<code>return</code>一个值。</p>
