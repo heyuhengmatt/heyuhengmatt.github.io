@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Python排序算法可视化 | Kevin's Space</title><meta name="keywords" content="瞎尝试,Python学习"><meta name="author" content="Kevin Matt,he_yuheng@163.com"><meta name="copyright" content="Kevin Matt"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Python排序算法可视化  前言 在为大一同学们写C语言期末复习指南时，在菜鸟教程上看到了几幅排序算法的散点动图，感觉很有意思，并且立即想到了之前参加焦糖招新的时候用过的matplotlib可视化库，尝试实现一下各种算法。   正文 话不多说，立即开始尝试：  准备工作 简单想了一下，在matplotlib库提供的几种不同的图形中，散点图可能会最为直观，翻阅doc可以找到相关的函数： matp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python排序算法可视化">
+<meta property="og:url" content="https://heyuhengmatt.github.io/2020/12/242292.html">
+<meta property="og:site_name" content="Kevin&#39;s Space">
+<meta property="og:description" content="Python排序算法可视化  前言 在为大一同学们写C语言期末复习指南时，在菜鸟教程上看到了几幅排序算法的散点动图，感觉很有意思，并且立即想到了之前参加焦糖招新的时候用过的matplotlib可视化库，尝试实现一下各种算法。   正文 话不多说，立即开始尝试：  准备工作 简单想了一下，在matplotlib库提供的几种不同的图形中，散点图可能会最为直观，翻阅doc可以找到相关的函数： matp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kevinmatt-1303917904.file.myqcloud.com/20201224145643.png">
+<meta property="article:published_time" content="2020-12-24T06:55:00.000Z">
+<meta property="article:modified_time" content="2020-12-25T04:25:26.872Z">
+<meta property="article:author" content="Kevin Matt">
+<meta property="article:tag" content="瞎尝试">
+<meta property="article:tag" content="Python学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kevinmatt-1303917904.file.myqcloud.com/20201224145643.png"><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://heyuhengmatt.github.io/2020/12/242292"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":10,"position":"top","messagePrev":"这篇文章已经有","messageNext":"天没有更新，其中的内容可能已经过时。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Kevin Matt","link":"链接: ","source":"来源: Kevin's Space","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: {"text":"D,K","fontSize":"15px"},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2020-12-25 12:25:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }})()</script><link rel="stylesheet" href="/css/background.css"><link rel="stylesheet" href="/css/transp.css"><link rel="stylesheet" href="/css/roll.css"><style type="text/css">#toggle-sidebar {left:100px}</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/tags.css"><link href="https://fonts.font.im/css?family=Nunito:700" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/css/hideCategory.min.css" rel="stylesheet"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://s1.ax1x.com/2020/10/11/067U1A.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文档</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://kevinmatt-1303917904.file.myqcloud.com/20201224145643.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kevin's Space</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文档</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-comment"></i><span> 说说</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Python排序算法可视化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-24T06:55:00.000Z" title="发表于 2020-12-24 14:55:00">2020-12-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-12-25T04:25:26.872Z" title="更新于 2020-12-25 12:25:26">2020-12-25</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="python排序算法可视化"><a class="markdownIt-Anchor" href="#python排序算法可视化"></a> Python排序算法可视化</h1>
+<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>在为大一同学们写C语言期末复习指南时，在菜鸟教程上看到了几幅排序算法的散点动图，感觉很有意思，并且立即想到了之前参加焦糖招新的时候用过的<code>matplotlib</code>可视化库，尝试实现一下各种算法。</p>
+<hr />
+<h2 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h2>
+<p>话不多说，立即开始尝试：</p>
+<h3 id="准备工作"><a class="markdownIt-Anchor" href="#准备工作"></a> 准备工作</h3>
+<p>简单想了一下，在<code>matplotlib</code>库提供的几种不同的图形中，散点图可能会最为直观，翻阅doc可以找到相关的函数：</p>
+<p><code>matplotlib.pyplot.scatter(x, y, s=None, c=None, marker=None, cmap=None, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, verts=&lt;deprecated parameter&gt;, edgecolors=None, *, plotnonfinite=False, data=None, **kwargs)</code></p>
+<p>参数说明：</p>
+<ul>
+<li>
+<p><img src= "/img/loading.gif" data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/20201224150426.png" alt="image-20201224150426475" /></p>
+<p>必需参数，确定散点的横纵坐标，支持传入<code>array</code>(<strong>也就是说可以传入两个列表来直接画出所有的点</strong>)</p>
+</li>
+<li>
+<p>s: float or array-like,shapr(n,),optinal</p>
+<p>可选项，控制各个散点的大小</p>
+</li>
+<li>
+<p>c: array-like or list of colors or color, optional</p>
+<p>可选项，控制散点颜色</p>
+</li>
+</ul>
+<p>更多的参数项似乎很难用得到，于是这里就不写了。</p>
+<h3 id="思路确立"><a class="markdownIt-Anchor" href="#思路确立"></a> 思路确立</h3>
+<p>第一次建立的初期思路如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">graph TB</span><br><span class="line">	生成一个随机的数字列表--&gt;构建排序算法--&quot;冒泡排序&lt;br&gt;快速排序&lt;br&gt;...&quot;--&gt;在排序过程中得到每一帧的散点状态--&quot;pyplot.scatter(x,y,s)&quot;--&gt;逐帧绘制并合成--&quot;matplotlib.animation.FuncAnimation&quot;--&gt;得到连续画面</span><br></pre></td></tr></table></figure>
+<p>看起来一切进展还算顺利，然而到了逐帧绘制合成时，问题出现了。</p>
+<p>我们回头看看<code>FuncAnimation</code>函数的参数说明：</p>
+<p><code>class matplotlib.animation.FuncAnimation(fig, func, frames=None, init_func=None, fargs=None, save_count=None, *, cache_frame_data=True, **kwargs)</code></p>
+<p><code>fig</code>是要选取的图变量，<code>func</code>是每一帧的更新函数</p>
+<p><code>FuncAnimation</code>调用<code>func</code>来绘制每一帧画面，可我们的排序算法是一个循环的过程，我们需要展示的是每次循环的结果，也就是我们绘制每一帧的过程是在排序过程中发生的，<code>FuncAnimation</code>无法直接穿透循环过程来得到每一帧的数据，用这种方法来更新每一帧将遇到巨大的困难。</p>
+<p>那么如何解决这个问题呢？</p>
+<p>两个思路：</p>
+<ul>
+<li>1.将循环过程中每一帧的数据保存在列表中，在最后调用<code>func</code>的时候来遍历数组绘图</li>
+<li>2.抛弃<code>FuncAnimation</code>函数，自己逐帧绘制</li>
+</ul>
+<p>第一个思路乍看起来还不错，但如果数据量较大，将占用大量的内存来存储数据。</p>
+<p>所以我决定使用第二个思路，自己绘制每一帧的画面。</p>
+<p>修改后的思路为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">graph TB</span><br><span class="line">	生成连续随机数列表--&gt;构建排序算法--&gt;在排序过程中绘制散点图--&quot;pyplot.scatter(x,y,s,c)&quot;--&gt;直接得到动画</span><br></pre></td></tr></table></figure>
+<p>按照这个思路，我们从头开始构建：</p>
+<h4 id="生成连续随机数列表"><a class="markdownIt-Anchor" href="#生成连续随机数列表"></a> 生成连续随机数列表</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">a = list(range(<span class="number">100</span>))</span><br><span class="line">a = random.sample(a,k = <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>这里直接生成了一组<code>0~99</code>的数据，为了保证排序结束的散点图是一条直线，要避免生成重复的随机数，所以调用<code>random.sample</code></p>
+<h4 id="构建排序算法"><a class="markdownIt-Anchor" href="#构建排序算法"></a> 构建排序算法</h4>
+<h5 id="冒泡排序"><a class="markdownIt-Anchor" href="#冒泡排序"></a> 冒泡排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubbleSort</span>(<span class="params">a</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(a)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(a)-i<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> (a[j] &gt; a[j+<span class="number">1</span>]):</span><br><span class="line">                a[j], a[j+<span class="number">1</span>] = a[j+<span class="number">1</span>], a[j]</span><br></pre></td></tr></table></figure>
+<h5 id="插入排序"><a class="markdownIt-Anchor" href="#插入排序"></a> 插入排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertSort</span>(<span class="params">a</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(a)):</span><br><span class="line">        min = i</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>, len(a)):</span><br><span class="line">            <span class="keyword">if</span> a[min] &gt; a[j]:</span><br><span class="line">                min = j</span><br><span class="line">        a[i], a[min] = a[min], a[i]</span><br></pre></td></tr></table></figure>
+<h5 id="希尔排序升级版插入排序"><a class="markdownIt-Anchor" href="#希尔排序升级版插入排序"></a> 希尔排序(升级版插入排序)</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shellSort</span>(<span class="params">a</span>):</span></span><br><span class="line">    gap = len(a)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> gap &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(gap, len(a)):</span><br><span class="line">            j = i</span><br><span class="line">            current = a[i]</span><br><span class="line">            <span class="keyword">while</span> j - gap &gt;= <span class="number">0</span> <span class="keyword">and</span> current &lt; a[j-gap]:</span><br><span class="line">                a[j] = a[j-gap]</span><br><span class="line">                j -= gap</span><br><span class="line">                a[j] = current</span><br><span class="line">        gap //= <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h5 id="快速排序"><a class="markdownIt-Anchor" href="#快速排序"></a> 快速排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort</span>(<span class="params">a</span>):</span></span><br><span class="line">    <span class="keyword">if</span> len(a) &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> a</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = a[<span class="number">0</span>]</span><br><span class="line">        less = [i <span class="keyword">for</span> i <span class="keyword">in</span> a[<span class="number">1</span>:] <span class="keyword">if</span> i &lt;= pivot]</span><br><span class="line">        greater = [i <span class="keyword">for</span> i <span class="keyword">in</span> a[<span class="number">1</span>:] <span class="keyword">if</span> i &gt; pivot]</span><br><span class="line">        <span class="keyword">return</span> quickSort(less) + [pivot] + quickSort(greater)</span><br><span class="line"></span><br><span class="line">a = quickSort(a)</span><br></pre></td></tr></table></figure>
+<h5 id="归并排序"><a class="markdownIt-Anchor" href="#归并排序"></a> 归并排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="基数排序"><a class="markdownIt-Anchor" href="#基数排序"></a> 基数排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="基数排序-2"><a class="markdownIt-Anchor" href="#基数排序-2"></a> 基数排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="堆排序"><a class="markdownIt-Anchor" href="#堆排序"></a> 堆排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="桶排序"><a class="markdownIt-Anchor" href="#桶排序"></a> 桶排序</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="绘制的逻辑"><a class="markdownIt-Anchor" href="#绘制的逻辑"></a> 绘制的逻辑</h4>
+<p>要做到自己绘制每一帧，我们需要按照这样的逻辑来执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">flowchart TB</span><br><span class="line">	subgraph 排序过程</span><br><span class="line">	擦除上一帧的画面--&quot;plt.cla()&quot;---&gt;绘制当前的散点--&quot;plt.scatter(x,y,s,c)&quot;---&gt;暂停一个时长--&quot;进入新的周期&quot;--&gt;擦除上一帧的画面</span><br><span class="line">	end</span><br><span class="line">	暂停一个时长--排序结束后--&gt;a[&quot;plt.show()&lt;br&gt;plt.close()&quot;]</span><br></pre></td></tr></table></figure>
+<p>那么代码就很简单了：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.cla()</span><br><span class="line">x = range(<span class="number">0</span>, <span class="number">100</span>)</span><br><span class="line">plt.scatter(a, x, color=<span class="string">&quot;00&quot;</span>, s=<span class="number">2</span>)</span><br><span class="line">plt.pause(<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
+<p>将这段代码放置到能体现排序算法特点的循环周期内，在循环结束依次后展示所有的画面：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.show()</span><br><span class="line">plt.close()</span><br></pre></td></tr></table></figure>
+<p>至此，可视化过程就已经实现了。</p>
+<hr />
+<h2 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h2>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:he_yuheng@163.com">Kevin Matt</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://heyuhengmatt.github.io/2020/12/242292.html">https://heyuhengmatt.github.io/2020/12/242292.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://heyuhengmatt.github.io" target="_blank">Kevin's Space</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9E%8E%E5%B0%9D%E8%AF%95/">瞎尝试</a><a class="post-meta__tags" href="/tags/Python%E5%AD%A6%E4%B9%A0/">Python学习</a></div><div class="post_share"><div class="social-share" data-image="https://kevinmatt-1303917904.file.myqcloud.com/20201224145643.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://kevinmatt-1303917904.file.myqcloud.com/wechat_pay.png" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/wechat_pay.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://kevinmatt-1303917904.file.myqcloud.com/ali_pay.png" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/ali_pay.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/12/1465003.html"><img class="next-cover" data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201014140049.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Json学习笔记</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://s1.ax1x.com/2020/10/11/067U1A.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Kevin Matt</div><div class="author-info__description">摸鱼达人</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/heyuhengmatt"><i class="fab fa-github"></i><span>heyuhengmatt</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/heyuhengmatt" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:he_yuheng@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text"> Python排序算法可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">1.2.</span> <span class="toc-text"> 正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E7%A1%AE%E7%AB%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 思路确立</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E8%BF%9E%E7%BB%AD%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%88%97%E8%A1%A8"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 生成连续随机数列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 构建排序算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text"> 冒泡排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text"> 插入排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%E5%8D%87%E7%BA%A7%E7%89%88%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.3.</span> <span class="toc-text"> 希尔排序(升级版插入排序)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.4.</span> <span class="toc-text"> 快速排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.5.</span> <span class="toc-text"> 归并排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.6.</span> <span class="toc-text"> 基数排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F-2"><span class="toc-number">1.2.2.2.7.</span> <span class="toc-text"> 基数排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.8.</span> <span class="toc-text"> 堆排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A1%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.2.9.</span> <span class="toc-text"> 桶排序</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E7%9A%84%E9%80%BB%E8%BE%91"><span class="toc-number">1.2.2.3.</span> <span class="toc-text"> 绘制的逻辑</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">1.3.</span> <span class="toc-text"> 后记</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/12/242292.html" title="Python排序算法可视化"><img data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/20201224145643.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python排序算法可视化"/></a><div class="content"><a class="title" href="/2020/12/242292.html" title="Python排序算法可视化">Python排序算法可视化</a><time datetime="2020-12-24T06:55:00.000Z" title="发表于 2020-12-24 14:55:00">2020-12-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/1465003.html" title="Json学习笔记"><img data-lazy-src="https://kevinmatt-1303917904.cos.ap-chengdu.myqcloud.com/20201014140049.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Json学习笔记"/></a><div class="content"><a class="title" href="/2020/12/1465003.html" title="Json学习笔记">Json学习笔记</a><time datetime="2020-12-14T05:49:00.000Z" title="发表于 2020-12-14 13:49:00">2020-12-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/0718363.html" title="近日规划&amp;完成情况"><img data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/20201207162714.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="近日规划&amp;完成情况"/></a><div class="content"><a class="title" href="/2020/12/0718363.html" title="近日规划&amp;完成情况">近日规划&amp;完成情况</a><time datetime="2020-12-07T08:18:35.000Z" title="发表于 2020-12-07 16:18:35">2020-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/0739258.html" title="C语言期末复习指南"><img data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/20201221195953.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C语言期末复习指南"/></a><div class="content"><a class="title" href="/2020/12/0739258.html" title="C语言期末复习指南">C语言期末复习指南</a><time datetime="2020-12-07T08:18:35.000Z" title="发表于 2020-12-07 16:18:35">2020-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/11/2451309.html" title="Docker&amp;K8s学习笔记"><img data-lazy-src="https://kevinmatt-1303917904.file.myqcloud.com/20201124135006.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker&amp;K8s学习笔记"/></a><div class="content"><a class="title" href="/2020/11/2451309.html" title="Docker&amp;K8s学习笔记">Docker&amp;K8s学习笔记</a><time datetime="2020-11-24T05:49:00.000Z" title="发表于 2020-11-24 13:49:00">2020-11-24</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Kevin Matt</div><div class="footer_custom_text">Hello, welcome to Kevin's space!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js', function () {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      true && mermaid.init()
+    })
+  }
+}</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'dfIqaR3dlG11rExjsg8QxPSq-gzGzoHsz',
+      appKey: 'qnmn7PvGee645pdcmcucnyvJ',
+      placeholder: '请留下你的足迹,昵称可以使用QQ~',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: true,
+      serverURLs: 'https://dfiqar3d.lc-cn-n1-shared.com',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign({}, initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div class="aplayer no-destroy" data-id="5294500260" data-volume="0.3" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/hideCategory.min.js"><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" async="async" mobile="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>
