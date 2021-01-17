@@ -58,6 +58,17 @@
 </div>
 <br />
 
+<div align="center">
+  <a
+    href="Hexo_StartFromZero.html"
+    style="color: black; font-size: 2.5rem; font-weight: 500"
+    target="_blank"
+    >从零开始的Hexo博客</a
+  >
+</div>
+
+<br />
+
 --------------------------
 
 
