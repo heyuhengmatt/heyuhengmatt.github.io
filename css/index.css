@@ -1608,15 +1608,6 @@ figure.highlight pre .tag .attr,
 figure.highlight pre .javascript .function {
   color: #c792ea;
 }
-#article-container figure.highlight .line:before {
-  display: inline-block;
-  padding: 0 0.3rem 0 0;
-  min-width: 1.6rem;
-  color: rgba(238,255,255,0.5);
-  content: counter(line);
-  counter-increment: line;
-  text-align: left;
-}
 #article-container figure.highlight .line.marked {
   background-color: rgba(97,97,97,0.314);
 }
@@ -1649,8 +1640,6 @@ figure.highlight pre .javascript .function {
   background: #212121;
   color: #eff;
   line-height: 1.6;
-  counter-reset: line;
-  white-space: pre-wrap;
 }
 blockquote {
   margin: 0 0 1rem;
@@ -2137,16 +2126,6 @@ blockquote footer cite:before {
     width: 100% !important;
   }
 }
-@media screen and (min-width: 900px) {
-  .layout > div:first-child {
-    -webkit-box-ordinal-group: 2;
-    -moz-box-ordinal-group: 2;
-    -o-box-ordinal-group: 2;
-    -ms-flex-order: 2;
-    -webkit-order: 2;
-    order: 2;
-  }
-}
 .layout.hide-aside {
   max-width: 1000px;
 }
@@ -2616,7 +2595,7 @@ blockquote footer cite:before {
 }
 @media screen and (min-width: 900px) {
   #aside_content {
-    padding-right: 15px;
+    padding-left: 15px;
   }
 }
 @media screen and (max-width: 900px) {
